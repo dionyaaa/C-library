@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -7,35 +8,36 @@
 
 void print_int(const void* element)
 {
+	assert(element != NULL);
 	printf("%d", *(const int*)element);
 }
 
 
 void print_float(const void* element)
 {
+	assert(element != NULL);
 	printf("%f", *(const float*)element);
 }
 
 
 void print_double(const void* element)
 {
+	assert(element != NULL);
 	printf("%lf", *(const double*)element);
 }
 
 
-bool arr_print(const void* array, size_t array_size, size_t block_size, void (*form)(const void* element), const char* separator)
+void arr_print(const void* array, size_t array_size, size_t block_size, void (*form)(const void* element), const char* separator)
 {
-	if (array == NULL || form == NULL || array_size == 0 || block_size < 1)
-		return false;
+	assert(array != NULL && form != NULL && array_size != 0 && block_size != 0);
 
-	const char* ptr = (const char*)array;
+	const unsigned char* ptr = (const unsigned char*)array;
 	for (size_t i = 0; i < array_size; i++)
 	{
 		form(ptr + i * block_size);
 		if (separator != NULL && i < array_size - 1)
 			printf("%s", separator);
 	}
-	return true;
 }
 
 

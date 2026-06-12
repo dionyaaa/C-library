@@ -32,13 +32,12 @@ bool bubble_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(c
 
 bool insertion_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
 {
-	if (array == NULL || cmp == NULL || block_size == 0)
-		return false;
+	assert(array != NULL && cmp != NULL && block_size != 0);
 	if (array_size <= 1)
 		return true;
 
-	char* ptr = (char*)array;
-	char* tmp = (char*)malloc(block_size);
+	unsigned char* ptr = (unsigned char*)array;
+	unsigned char* tmp = (unsigned char*)malloc(block_size);
 	if (tmp == NULL)
 		return false;
 
@@ -61,8 +60,7 @@ bool insertion_sort(void* array, size_t array_size, size_t block_size, int (*cmp
 
 bool counting_sort(int* array, size_t array_size, bool is_ascending)
 {
-	if (array == NULL)
-		return false;
+	assert(array != NULL);
 	if (array_size <= 1)
 		return true;
 
