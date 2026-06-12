@@ -1,12 +1,33 @@
+#include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
+#include "../include/utils_lib.h"
 #include "../include/sort_lib.h"
 
 
-#define MAX_ARRAY_RANGE 4194304
+bool bubble_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
+{
+	assert(array != NULL && cmp != NULL && block_size != 0);
+	if (array_size <= 1)
+		return true;
+
+	unsigned char* ptr = (unsigned char*)array;
+	while (array_size != 0)
+	{
+		size_t max_index = 0;
+		for (size_t i = 1; i < array_size; i++)
+			if (cmp(ptr + (i - 1) * block_size, ptr + i * block_size) > 0)
+			{
+				val_swap(ptr + (i - 1) * block_size, ptr + i * block_size, block_size);
+				max_index = i;
+			}
+		array_size = max_index;
+	}
+	return true;
+}
 
 
 bool insertion_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
@@ -56,7 +77,7 @@ bool counting_sort(int* array, size_t array_size, bool is_ascending)
 	}
 
 	size_t range = (size_t)((int64_t)max_number - (int64_t)min_number + 1);
-	if (range > MAX_ARRAY_RANGE)
+	if (range > MAX_TMP_ARRAY_SIZE_FOR_COUNTING_SORT)
 		return false;
 	int* tmp_array = (int*)calloc(range, sizeof(int));
 	if (tmp_array == NULL)
