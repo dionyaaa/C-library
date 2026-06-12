@@ -17,14 +17,34 @@ bool bubble_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(c
 	unsigned char* ptr = (unsigned char*)array;
 	while (array_size != 0)
 	{
-		size_t max_index = 0;
+		size_t index = 0;
 		for (size_t i = 1; i < array_size; i++)
 			if (cmp(ptr + (i - 1) * block_size, ptr + i * block_size) > 0)
 			{
 				val_swap(ptr + (i - 1) * block_size, ptr + i * block_size, block_size);
-				max_index = i;
+				index = i;
 			}
-		array_size = max_index;
+		array_size = index;
+	}
+	return true;
+}
+
+
+bool selection_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
+{
+	assert(array != NULL && cmp != NULL && block_size != 0);
+	if (array_size <= 1)
+		return true;
+
+	unsigned char* ptr = (unsigned char*)array;
+	for (size_t i = 0; i < array_size - 1; i++)
+	{
+		size_t index = i;
+		for (size_t j = i + 1;j < array_size;j++)
+			if (cmp(ptr + index * block_size, ptr + j * block_size) > 0)
+				index = j;
+		if (index != i)
+			val_swap(ptr + index * block_size, ptr + i * block_size, block_size);
 	}
 	return true;
 }
