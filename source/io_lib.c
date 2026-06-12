@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <stdbool.h>
 #include "../include/io_lib.h"
 
@@ -38,9 +39,15 @@ bool arr_print(const void* array, size_t array_size, size_t block_size, void (*f
 }
 
 
-char* getstr(void)
+char* getstr(size_t* input_length)
 {
-	size_t input_length = 0, input_size = 1;
+	if (input_length == NULL)
+	{
+		size_t tmp;
+		input_length = &tmp;
+	}
+	*input_length = 0;
+	size_t input_size = 16;
 	char* input_string = (char*)malloc(input_size);
 	if (input_string == NULL)
 		return NULL;
@@ -51,9 +58,9 @@ char* getstr(void)
 		if (input_symbol == '\n' || input_symbol == EOF)
 			break;
 
-		if (input_length >= input_size - 1)
+		if (*input_length >= input_size - 1)
 		{
-			input_size++;
+			input_size *= 2;
 			char* new_array = (char*)realloc(input_string, input_size);
 			if (new_array == NULL)
 			{
@@ -63,11 +70,11 @@ char* getstr(void)
 			input_string = new_array;
 		}
 
-		input_string[input_length] = (char)input_symbol;
-		input_length++;
+		input_string[*input_length] = (char)input_symbol;
+		++*input_length;
 	} while (true);
 
-	input_string[input_length] = '\0';
+	input_string[*input_length] = '\0';
 	return input_string;
 }
 
