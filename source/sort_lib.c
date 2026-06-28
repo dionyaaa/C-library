@@ -8,6 +8,55 @@
 #include "../include/sort_lib.h"
 
 
+unsigned char* part_of_Hoares_quick_sort(unsigned char* left, unsigned char* right, size_t block_size, int (*cmp)(const void* a, const void* b), void* pivot)
+{
+	assert(left != NULL && right != NULL && cmp != NULL && pivot != NULL && block_size != 0);
+	memcpy(pivot, left + ((right - left) / block_size / 2) * block_size, block_size);
+
+	while (left <= right)
+	{
+		while (cmp(left, pivot) < 0)
+			left += block_size;
+		while (cmp(right, pivot) > 0)
+			right -= block_size;
+		if (left <= right)
+		{
+			if (left != right)
+				val_swap(left, right, block_size);
+			left += block_size;
+			right -= block_size;
+		}
+	}
+	return left;
+}
+
+void recursion_of_Hoares_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b), void* pivot)
+{
+	assert(start != NULL && end != NULL && cmp != NULL && pivot != NULL && block_size != 0);
+	if (start >= end)
+		return;
+	unsigned char* ptr = part_of_Hoares_quick_sort(start, end, block_size, cmp, pivot);
+	recursion_of_Hoares_quick_sort(start, ptr - block_size, block_size, cmp, pivot);
+	recursion_of_Hoares_quick_sort(ptr, end, block_size, cmp, pivot);
+}
+
+bool Hoares_quick_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
+{
+	assert(array != NULL && cmp != NULL && block_size != 0);
+	if (array_size <= 1)
+		return true;
+
+	void* pivot = malloc(block_size);
+	if (pivot == NULL)
+		return false;
+
+	recursion_of_Hoares_quick_sort((unsigned char*)array, (unsigned char*)array + (array_size - 1) * block_size, block_size, cmp, pivot);
+
+	free(pivot);
+	return true;
+}
+
+
 bool bubble_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
 {
 	assert(array != NULL && cmp != NULL && block_size != 0);
