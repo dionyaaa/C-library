@@ -10,6 +10,10 @@ unsigned char* part_of_Hoares_quick_sort(unsigned char* left, unsigned char* rig
 void recursion_of_Hoares_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b), void* pivot);
 bool Hoares_quick_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b));
 
+unsigned char* part_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b));
+void recursion_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b));
+bool Lomuto_quick_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b));
+
 bool bubble_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b));
 bool selection_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b));
 bool insertion_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b));

@@ -57,6 +57,45 @@ bool Hoares_quick_sort(void* array, size_t array_size, size_t block_size, int (*
 }
 
 
+unsigned char* part_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b))
+{
+	assert(start != NULL && end != NULL && cmp != NULL && block_size != 0);
+
+	for (unsigned char* ptr = start; ptr < end; ptr += block_size)
+	{
+		if (cmp(ptr, end) <= 0)
+		{
+			if (ptr != start)
+				val_swap(ptr, start, block_size);
+			start += block_size;
+		}
+	}
+
+	if (start != end)
+		val_swap(start, end, block_size);
+	return start;
+}
+
+void recursion_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b))
+{
+	assert(start != NULL && end != NULL && cmp != NULL && block_size != 0);
+	if (start >= end)
+		return;
+	unsigned char* ptr = part_of_Lomuto_quick_sort(start, end, block_size, cmp);
+	recursion_of_Lomuto_quick_sort(start, ptr - block_size, block_size, cmp);
+	recursion_of_Lomuto_quick_sort(ptr + block_size, end, block_size, cmp);
+}
+
+bool Lomuto_quick_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
+{
+	assert(array != NULL && cmp != NULL && block_size != 0);
+	if (array_size <= 1)
+		return true;
+	recursion_of_Lomuto_quick_sort((unsigned char*)array, (unsigned char*)array + (array_size - 1) * block_size, block_size, cmp);
+	return true;
+}
+
+
 bool bubble_sort(void* array, size_t array_size, size_t block_size, int (*cmp)(const void* a, const void* b))
 {
 	assert(array != NULL && cmp != NULL && block_size != 0);
