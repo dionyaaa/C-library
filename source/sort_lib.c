@@ -8,7 +8,7 @@
 #include "../include/sort_lib.h"
 
 
-unsigned char* part_of_Hoares_quick_sort(unsigned char* left, unsigned char* right, size_t block_size, int (*cmp)(const void* a, const void* b), void* pivot)
+static unsigned char* part_of_Hoares_quick_sort(unsigned char* left, unsigned char* right, size_t block_size, int (*cmp)(const void* a, const void* b), void* pivot)
 {
 	assert(left != NULL && right != NULL && cmp != NULL && pivot != NULL && block_size != 0);
 	memcpy(pivot, left + ((right - left) / block_size / 2) * block_size, block_size);
@@ -30,7 +30,7 @@ unsigned char* part_of_Hoares_quick_sort(unsigned char* left, unsigned char* rig
 	return left;
 }
 
-void recursion_of_Hoares_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b), void* pivot)
+static void recursion_of_Hoares_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b), void* pivot)
 {
 	assert(start != NULL && end != NULL && cmp != NULL && pivot != NULL && block_size != 0);
 	if (start >= end)
@@ -57,7 +57,7 @@ bool Hoares_quick_sort(void* array, size_t array_size, size_t block_size, int (*
 }
 
 
-unsigned char* part_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b))
+static unsigned char* part_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b))
 {
 	assert(start != NULL && end != NULL && cmp != NULL && block_size != 0);
 
@@ -76,7 +76,7 @@ unsigned char* part_of_Lomuto_quick_sort(unsigned char* start, unsigned char* en
 	return start;
 }
 
-void recursion_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b))
+static void recursion_of_Lomuto_quick_sort(unsigned char* start, unsigned char* end, size_t block_size, int (*cmp)(const void* a, const void* b))
 {
 	assert(start != NULL && end != NULL && cmp != NULL && block_size != 0);
 	if (start >= end)
