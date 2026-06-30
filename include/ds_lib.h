@@ -11,4 +11,11 @@ bool stack_pop(stack* stack_ptr, void* value);
 void stack_clear(stack* stack_ptr);
 void stack_destroy(stack* stack_ptr);
 
+typedef struct queue queue;
+queue* queue_create(size_t element_size);
+bool queue_push(queue* queue_ptr, const void* value);
+bool queue_pop(queue* queue_ptr, void* value);
+void queue_clear(queue* queue_ptr);
+void queue_destroy(queue* queue_ptr);
+
 #endif
