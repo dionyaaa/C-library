@@ -168,3 +168,72 @@ void queue_destroy(queue* queue_ptr)
 	queue_clear(queue_ptr);
 	free(queue_ptr);
 }
+
+
+struct darray_stack
+{
+	void* array;
+	size_t array_size;
+	size_t element_size;
+	size_t top;
+};
+
+darray_stack* darray_stack_create(size_t element_size)
+{
+	assert(element_size != 0);
+	darray_stack* ptr = (darray_stack*)malloc(sizeof(darray_stack));
+	if (ptr == NULL)
+		return NULL;
+
+	ptr->array_size = DARRAY_STACK_FIRST_SIZE;
+	ptr->element_size = element_size;
+	ptr->top = 0;
+
+	ptr->array = (void*)malloc(ptr->array_size * element_size);
+	if (ptr->array == NULL)
+	{
+		free(ptr);
+		return NULL;
+	}
+
+	return ptr;
+}
+
+bool darray_stack_push(darray_stack* darray_stack_ptr, const void* value)
+{
+	assert(darray_stack_ptr != NULL && value != NULL);
+	if (darray_stack_ptr->top == darray_stack_ptr->array_size)
+	{
+		void* tmp = (void*)realloc(darray_stack_ptr->array, (darray_stack_ptr->array_size * 2) * darray_stack_ptr->element_size);
+		if (tmp == NULL)
+			return false;
+		darray_stack_ptr->array = tmp;
+		darray_stack_ptr->array_size = darray_stack_ptr->array_size * 2;
+	}
+	memcpy((unsigned char*)darray_stack_ptr->array + darray_stack_ptr->top * darray_stack_ptr->element_size, value, darray_stack_ptr->element_size);
+	darray_stack_ptr->top++;
+	return true;
+}
+
+bool darray_stack_pop(darray_stack* darray_stack_ptr, void* value)
+{
+	assert(darray_stack_ptr != NULL && value != NULL);
+	if (darray_stack_ptr->top == 0)
+		return false;
+	memcpy(value, (unsigned char*)darray_stack_ptr->array + (darray_stack_ptr->top - 1) * darray_stack_ptr->element_size, darray_stack_ptr->element_size);
+	darray_stack_ptr->top--;
+	return true;
+}
+
+void darray_stack_clear(darray_stack* darray_stack_ptr)
+{
+	assert(darray_stack_ptr != NULL);
+	darray_stack_ptr->top = 0;
+}
+
+void darray_stack_destroy(darray_stack* darray_stack_ptr)
+{
+	assert(darray_stack_ptr != NULL);
+	free(darray_stack_ptr->array);
+	free(darray_stack_ptr);
+}
